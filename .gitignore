@@ -1,0 +1,4 @@
+*.pcm
+*.wav
+*.log
+.idea/
