@@ -1,15 +1,9 @@
 from flask import Flask, request, jsonify, send_file
 from io import BytesIO
-from deepseek_client import DeepSeekClient
-from baidu_tts_client import BaiduTTSClient
-from baidu_asr_client import BaiduASRClient
-from config import DEEPSEEK_API_KEY, BAIDU_TTS_CONFIG, BAIDU_ASR_CONFIG
 from loguru import logger
 from server import ServerAPI
 
 app = Flask(__name__)
-
-
 
 # 初始化服务
 api_service = ServerAPI()
@@ -55,6 +49,9 @@ def process_audio():
 
         audio_file = request.files['audio']
         audio_data = audio_file.read()
+
+        # 记录音频信息
+        logger.debug(f"Received audio file: {audio_file.filename}, size: {len(audio_data)} bytes")
 
         reply_audio = api_service.handle_user_audio(user_id, audio_data)
         return send_file(
