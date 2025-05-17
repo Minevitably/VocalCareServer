@@ -23,7 +23,7 @@ def initialize_session():
         audio_data = api_service.handle_new_client_connection(user_id)
         return send_file(
             BytesIO(audio_data),
-            mimetype='audio/wav',
+            mimetype='audio/mp3',  # MP3 格式
             as_attachment=False
         )
 
@@ -53,16 +53,18 @@ def process_audio():
         # 记录音频信息
         logger.debug(f"Received audio file: {audio_file.filename}, size: {len(audio_data)} bytes")
 
+        # 处理音频并返回 MP3
         reply_audio = api_service.handle_user_audio(user_id, audio_data)
         return send_file(
             BytesIO(reply_audio),
-            mimetype='audio/wav',
+            mimetype='audio/mp3',  # MP3 格式
             as_attachment=False
         )
 
     except Exception as e:
         logger.error(f"API error in process_audio: {e}")
         return jsonify({"error": str(e)}), 500
+
 
 
 if __name__ == "__main__":
